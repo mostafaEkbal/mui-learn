@@ -34,7 +34,7 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
 
-            <Grid container>
+            <Grid container sx={{ bgcolor: '#eaeff1' }}>
                 <Navbar />
                 <Header title={title} />
                 {children}
