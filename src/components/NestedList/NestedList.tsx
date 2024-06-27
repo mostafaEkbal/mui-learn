@@ -41,6 +41,7 @@ const NestedList: React.FC<NestedListProps> = ({ nestedList, isExpanded }) => {
             ...prevOpenItems,
             [id]: !prevOpenItems[id]
         }));
+        console.log(id, 'nested');
     };
 
     useEffect(() => {
@@ -59,9 +60,10 @@ const NestedList: React.FC<NestedListProps> = ({ nestedList, isExpanded }) => {
             return (
                 <div key={item.id}>
                     <ListItemButton
-                        onClick={() =>
-                            hasNestedChildren && handleClick(item.id)
-                        }
+                        onClick={() => {
+                            hasNestedChildren && handleClick(item.id);
+                            console.log(item);
+                        }}
                         sx={{ pl: depth * 4 }}
                     >
                         <ListItemText primary={item.name} />

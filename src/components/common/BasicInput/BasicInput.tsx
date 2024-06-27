@@ -141,7 +141,7 @@ const BasicInput: React.FC<IBasicInputProps> = ({
     return (
         <>
             {inputType === 'password' ? (
-                <FormControl variant={variant} {...props}>
+                <FormControl fullWidth variant={variant} {...props}>
                     <InputLabel htmlFor={name}>{label}</InputLabel>
                     <OutlinedInput
                         id={name}
@@ -179,6 +179,7 @@ const BasicInput: React.FC<IBasicInputProps> = ({
                     label={label}
                     required={required}
                     value={value}
+                    fullWidth
                     onChange={handleChange}
                     error={!!error && touched}
                     helperText={touched && error}
