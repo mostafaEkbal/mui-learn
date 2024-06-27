@@ -67,7 +67,8 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
     zIndex: theme.zIndex.modal,
     fontSize: 13,
     color: theme.palette.mode === 'light' ? '#24292e' : '#c9d1d9',
-    backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128'
+    backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128',
+    marginTop: 8 // Add margin here to move the Popper down
 }));
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
@@ -95,7 +96,7 @@ const Button = styled(ButtonBase)(({ theme }) => ({
     width: '100%',
     textAlign: 'left',
     padding: 8,
-    outline: '1px solid var(--grey)',
+    outline: '1px solid #999',
     fontFamily: 'sans-serif',
     borderRadius: 'var(--borderRadius)',
     color: theme.palette.mode === 'light' ? '#586069' : '#8b949e',
@@ -158,7 +159,7 @@ export default function AutocompleteComponent<T>({
 
     return (
         <React.Fragment>
-            <Box sx={{ width: 221, fontSize: 13 }}>
+            <Box sx={{ minWidth: 295, fontSize: 13 }}>
                 <Button
                     disableRipple
                     aria-describedby={id}
@@ -176,7 +177,15 @@ export default function AutocompleteComponent<T>({
                 id={id}
                 open={open}
                 anchorEl={anchorEl}
-                placement='bottom-start'
+                placement='bottom-end'
+                modifiers={[
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [3, 2]
+                        }
+                    }
+                ]}
             >
                 <ClickAwayListener onClickAway={handleClose}>
                     <div>

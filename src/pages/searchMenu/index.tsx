@@ -1,7 +1,7 @@
 import DefaultLayout from '@/layouts/DefaultLayout';
 import GridWrapper from '@/components/common/GridWrapper/GridWrapper';
 import NestedSearchMenu from '@/components/NestedSearchMenu/NestedSearchMenu';
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 const data = [
     { title: 'The Shawshank Redemption', year: 1994 },
@@ -149,19 +149,28 @@ const searchMenu = () => {
     return (
         <DefaultLayout>
             <GridWrapper>
-                <NestedSearchMenu
-                    data={data}
-                    onItemSelected={onItemSelected}
-                    placeholder='Search items'
-                    renderOption={(props, option) => (
-                        <Box>
-                            <span>{option.title}</span>
-                            <br />
-                            <span>{option.year}</span>
-                        </Box>
-                    )}
-                    getOptionLabel={(option) => option.title}
-                />
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '10px'
+                    }}
+                >
+                    <Typography>Select a movie</Typography>
+                    <NestedSearchMenu
+                        data={data}
+                        onItemSelected={onItemSelected}
+                        placeholder='Search items'
+                        renderOption={(props, option) => (
+                            <Box>
+                                <span>{option.title}</span>
+                                <br />
+                                <span>{option.year}</span>
+                            </Box>
+                        )}
+                        getOptionLabel={(option) => option.title}
+                    />
+                </Box>
             </GridWrapper>
         </DefaultLayout>
     );
