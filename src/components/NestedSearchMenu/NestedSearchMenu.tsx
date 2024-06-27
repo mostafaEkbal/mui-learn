@@ -119,13 +119,15 @@ interface AutocompleteComponentProps<T> {
         props: React.HTMLAttributes<HTMLLIElement>,
         option: T
     ) => React.ReactNode;
+    getOptionLabel: (option: T) => string;
 }
 
-export default function AutocompleteComponent<T extends { name: string }>({
+export default function AutocompleteComponent<T>({
     data,
     onItemSelected,
     placeholder = 'Filter items',
-    renderOption
+    renderOption,
+    getOptionLabel
 }: AutocompleteComponentProps<T>) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
@@ -163,7 +165,9 @@ export default function AutocompleteComponent<T extends { name: string }>({
                     onClick={handleClick}
                 >
                     <span>
-                        {selectedItem ? selectedItem.name : 'Select an item'}
+                        {selectedItem
+                            ? getOptionLabel(selectedItem)
+                            : 'Select an item'}
                     </span>
                     {menuIsOpen ? <ExpandMore /> : <ExpandLess />}
                 </Button>
@@ -198,7 +202,7 @@ export default function AutocompleteComponent<T extends { name: string }>({
                                 </li>
                             )}
                             options={data}
-                            getOptionLabel={(option) => option.name}
+                            getOptionLabel={getOptionLabel}
                             renderInput={(params) => (
                                 <StyledInput
                                     ref={params.InputProps.ref}
