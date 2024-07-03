@@ -141,14 +141,13 @@ const BasicInput: React.FC<IBasicInputProps> = ({
     return (
         <>
             {inputType === 'password' ? (
-                <FormControl fullWidth variant={variant} {...props}>
-                    <InputLabel htmlFor={name}>{label}</InputLabel>
-                    <OutlinedInput
-                        id={name}
-                        type={showPassword ? 'text' : 'password'}
-                        value={value}
-                        onChange={handleChange}
-                        endAdornment={
+                <TextField
+                    type={showPassword ? 'text' : 'password'}
+                    variant={variant}
+                    placeholder={placeholder}
+                    label={label}
+                    InputProps={{
+                        endAdornment: (
                             <InputAdornment position='end'>
                                 <IconButton
                                     aria-label='toggle password visibility'
@@ -163,14 +162,16 @@ const BasicInput: React.FC<IBasicInputProps> = ({
                                     )}
                                 </IconButton>
                             </InputAdornment>
-                        }
-                        label={label}
-                        error={!!error && touched}
-                    />
-                    {touched && error && (
-                        <p style={{ color: 'red' }}>{error}</p>
-                    )}
-                </FormControl>
+                        )
+                    }}
+                    value={value}
+                    required={required}
+                    fullWidth
+                    onChange={handleChange}
+                    error={!!error && touched}
+                    helperText={touched && error}
+                    {...props}
+                />
             ) : (
                 <TextField
                     type={getInputType(inputType)}
