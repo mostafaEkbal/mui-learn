@@ -21,17 +21,12 @@ const ParentComponent = () => {
     };
 
     const handleSubmit = () => {
-        if (isNameValid) {
+        if (isNameValid && nameTouched) {
             // Proceed with form submission
-            console.log('Form is valid, proceed with submission.');
+            console.log('Name and email is valid.');
         } else {
-            console.log('Form is invalid, fix errors before submission.');
+            console.log('Name is invalid.');
         }
-    };
-
-    const getColor = () => {
-        if (!nameTouched) return 'primary';
-        return isNameValid ? 'success' : 'error';
     };
 
     return (
@@ -52,7 +47,6 @@ const ParentComponent = () => {
                         label='Name'
                         required
                         onValidationChange={handleValidationChange}
-                        color={getColor()}
                     />
                     <BasicInput
                         name='email'
@@ -60,7 +54,6 @@ const ParentComponent = () => {
                         label='Email'
                         required
                         onValidationChange={handleValidationChange}
-                        color={getColor()}
                     />
                     <BasicInput
                         name='password'
@@ -68,7 +61,6 @@ const ParentComponent = () => {
                         label='Password'
                         required
                         onValidationChange={handleValidationChange}
-                        color={getColor()}
                     />
                     <BasicInput
                         name='phoneNumber'
@@ -76,7 +68,6 @@ const ParentComponent = () => {
                         label='PhoneNumber'
                         required
                         onValidationChange={handleValidationChange}
-                        color={getColor()}
                     />
                     <CommonButton onClick={handleSubmit}>Submit</CommonButton>
                 </Box>

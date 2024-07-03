@@ -50,7 +50,7 @@
     }
 
     ::-webkit-scrollbar-track {
-        background: red;
+        background: #9b9b9b;
         z-index: 10000;
     }
 

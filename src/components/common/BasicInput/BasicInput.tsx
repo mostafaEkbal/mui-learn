@@ -54,10 +54,7 @@ const BasicInput: React.FC<IBasicInputProps> = ({
     const getDefaultValidation = useCallback((inputType: string) => {
         switch (inputType) {
             case 'name':
-                return Yup.string().min(
-                    3,
-                    'Name must be at least 3 characters'
-                );
+                return Yup.string();
             case 'email':
                 return Yup.string().email('Email is invalid');
             case 'phoneNumber':
