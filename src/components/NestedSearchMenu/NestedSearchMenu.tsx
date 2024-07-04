@@ -14,50 +14,10 @@ import { Checkbox, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
-interface PopperComponentProps {
-    anchorEl?: any;
-    disablePortal?: boolean;
-    open: boolean;
-}
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
-const StyledAutocompletePopper = styled('div')(({ theme }) => ({
-    [`& .${autocompleteClasses.paper}`]: {
-        boxShadow: 'none',
-        margin: 0,
-        color: 'inherit',
-        fontSize: 13
-    },
-    [`& .${autocompleteClasses.listbox}`]: {
-        backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128',
-        padding: 0,
-        [`& .${autocompleteClasses.option}`]: {
-            minHeight: 'auto',
-            alignItems: 'flex-start',
-            padding: 8,
-            borderBottom: `1px solid ${
-                theme.palette.mode === 'light' ? '#eaecef' : '#30363d'
-            }`,
-            '&[aria-selected="true"]': {
-                backgroundColor: 'transparent'
-            },
-            [`&.${autocompleteClasses.focused}, &.${autocompleteClasses.focused}[aria-selected="true"]`]:
-                {
-                    backgroundColor: theme.palette.action.hover
-                }
-        }
-    },
-    [`&.${autocompleteClasses.popperDisablePortal}`]: {
-        position: 'relative'
-    }
-}));
-
-function PopperComponent(props: PopperComponentProps) {
-    const { disablePortal, anchorEl, open, ...other } = props;
-    return <StyledAutocompletePopper {...other} />;
-}
 
 const StyledPopper = styled(Popper)(({ theme }) => ({
     border: `1px solid ${
