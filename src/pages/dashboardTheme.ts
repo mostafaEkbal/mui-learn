@@ -59,6 +59,7 @@ export const dashboardTheme = createTheme({
         }
     },
     typography: {
+        fontFamily: 'Roboto,Helvetica,Arial, sans-serif',
         h1: {
             fontSize: '1.6rem',
             fontWeight: 600,

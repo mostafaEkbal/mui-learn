@@ -10,12 +10,18 @@ import ButtonBase from '@mui/material/ButtonBase';
 import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { Checkbox, TextField } from '@mui/material';
+import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
 interface PopperComponentProps {
     anchorEl?: any;
     disablePortal?: boolean;
     open: boolean;
 }
+
+const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
+const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
 const StyledAutocompletePopper = styled('div')(({ theme }) => ({
     [`& .${autocompleteClasses.paper}`]: {
@@ -71,7 +77,7 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
     marginTop: 8 // Add margin here to move the Popper down
 }));
 
-const StyledInput = styled(InputBase)(({ theme }) => ({
+const StyledInput = styled(TextField)(({ theme }) => ({
     padding: 10,
     width: '100%',
     borderBottom: `1px solid ${
@@ -82,9 +88,6 @@ const StyledInput = styled(InputBase)(({ theme }) => ({
         backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#0d1117',
         padding: 8,
         transition: theme.transitions.create(['border-color', 'box-shadow']),
-        border: `1px solid ${
-            theme.palette.mode === 'light' ? '#eaecef' : '#30363d'
-        }`,
         fontSize: 14
     }
 }));
@@ -106,15 +109,15 @@ const Button = styled(ButtonBase)(({ theme }) => ({
         width: '100%'
     },
     '& svg': {
-        width: 16,
-        height: 16,
+        width: 20,
+        height: 20,
         justifySelf: 'end'
     }
 }));
 
 interface AutocompleteComponentProps<T> {
     data: T[];
-    onItemSelected: (item: T) => void;
+    onItemSelected: (selectedItems: T[]) => void;
     placeholder?: string;
     renderOption: (
         props: React.HTMLAttributes<HTMLLIElement>,
@@ -132,7 +135,7 @@ export default function AutocompleteComponent<T>({
 }: AutocompleteComponentProps<T>) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
-    const [selectedItem, setSelectedItem] = React.useState<T | null>(null);
+    const [selectedItems, setSelectedItems] = React.useState<T[]>([]);
     const theme = useTheme();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -149,9 +152,14 @@ export default function AutocompleteComponent<T>({
     };
 
     const handleItemClick = (item: T) => {
-        setSelectedItem(item);
-        onItemSelected(item);
-        handleClose();
+        setSelectedItems((prev) => {
+            const isSelected = prev.includes(item);
+            const newSelectedItems = isSelected
+                ? prev.filter((i) => i !== item)
+                : [...prev, item];
+            onItemSelected(newSelectedItems);
+            return newSelectedItems;
+        });
     };
 
     const open = Boolean(anchorEl);
@@ -166,8 +174,8 @@ export default function AutocompleteComponent<T>({
                     onClick={handleClick}
                 >
                     <span>
-                        {selectedItem
-                            ? getOptionLabel(selectedItem)
+                        {selectedItems.length > 0
+                            ? selectedItems.map(getOptionLabel).join(', ')
                             : 'Select an item'}
                     </span>
                     {menuIsOpen ? <ExpandMore /> : <ExpandLess />}
@@ -178,19 +186,19 @@ export default function AutocompleteComponent<T>({
                 open={open}
                 anchorEl={anchorEl}
                 placement='bottom-end'
-                modifiers={[
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [3, 2]
-                        }
-                    }
-                ]}
             >
-                <ClickAwayListener onClickAway={handleClose}>
+                <ClickAwayListener
+                    onClickAway={() => {
+                        handleClose();
+                    }}
+                >
                     <div>
                         <Autocomplete
                             open
+                            multiple
+                            disableCloseOnSelect
+                            fullWidth
+                            forcePopupIcon={false}
                             onClose={(
                                 _event: React.ChangeEvent<{}>,
                                 reason: AutocompleteCloseReason
@@ -202,18 +210,30 @@ export default function AutocompleteComponent<T>({
                             clearOnEscape
                             disableClearable
                             noOptionsText='No items'
-                            renderOption={(props, option) => (
-                                <li
-                                    {...props}
-                                    onClick={() => handleItemClick(option)}
-                                >
-                                    {renderOption(props, option)}
-                                </li>
-                            )}
+                            renderOption={(props, option) => {
+                                const isSelected =
+                                    selectedItems.includes(option);
+                                return (
+                                    <li
+                                        {...props}
+                                        onClick={() => handleItemClick(option)}
+                                    >
+                                        <Checkbox
+                                            icon={icon}
+                                            checkedIcon={checkedIcon}
+                                            style={{ marginRight: 8 }}
+                                            checked={isSelected}
+                                        />
+                                        {renderOption(props, option)}
+                                    </li>
+                                );
+                            }}
                             options={data}
                             getOptionLabel={getOptionLabel}
                             renderInput={(params) => (
                                 <StyledInput
+                                    {...params}
+                                    fullWidth
                                     ref={params.InputProps.ref}
                                     inputProps={params.inputProps}
                                     autoFocus

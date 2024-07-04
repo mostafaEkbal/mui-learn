@@ -2,6 +2,8 @@
     --main-color: #174292;
     --seconed-color: #e03c5f;
 
+    --background-color: #eee;
+
     --white: #ffffff;
     --black: #000000;
     --title: #202224;
@@ -69,7 +71,7 @@ html {
 
 html,
 body {
-    font-family: HelveticaNeue;
+    font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
     overflow-x: hidden;
     padding: 0 !important;
     background-color: var(--background-color);
