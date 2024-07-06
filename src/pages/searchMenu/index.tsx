@@ -113,11 +113,12 @@ const searchMenu = () => {
                         width: 300
                     }}
                 >
-                    <Typography>Select a movie</Typography>
+                    <Typography>Select Assets</Typography>
                     <NestedSearchMenu
                         data={data}
                         onItemSelected={onItemSelected}
-                        placeholder='Search items'
+                        menuPlaceholder= 'select assets'
+                        placeholder='Search assets'
                         renderOption={(props, option) => (
                             <Box>
                                 <span>{option.name}</span>

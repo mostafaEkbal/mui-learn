@@ -30,6 +30,7 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
     }`,
     borderRadius: 6,
     width: 300,
+    minHeight: 'fit-content',
     zIndex: theme.zIndex.modal,
     fontSize: 13,
     color: theme.palette.mode === 'light' ? '#24292e' : '#c9d1d9',
@@ -58,6 +59,8 @@ const Button = styled(ButtonBase)(({ theme }) => ({
     justifyContent: 'end',
     width: '100%',
     textAlign: 'left',
+    minHeight: 'fit-content',
+    marginBottom: 100,
     padding: 8,
     outline: '1px solid #999',
     fontFamily: 'sans-serif',
@@ -78,6 +81,7 @@ const Button = styled(ButtonBase)(({ theme }) => ({
 interface AutocompleteComponentProps<T> {
     data: T[];
     onItemSelected: (selectedItems: T[]) => void;
+    menuPlaceholder?: string;
     placeholder?: string;
     renderOption: (
         props: React.HTMLAttributes<HTMLLIElement>,
@@ -89,7 +93,8 @@ interface AutocompleteComponentProps<T> {
 export default function AutocompleteComponent<T>({
     data,
     onItemSelected,
-    placeholder = 'Filter items',
+    placeholder,
+    menuPlaceholder,
     renderOption,
     getOptionLabel
 }: AutocompleteComponentProps<T>) {
@@ -136,7 +141,7 @@ export default function AutocompleteComponent<T>({
                     <span>
                         {selectedItems.length > 0
                             ? selectedItems.map(getOptionLabel).join(', ')
-                            : 'Select an item'}
+                            : menuPlaceholder}
                     </span>
                     {menuIsOpen ? <ExpandMore /> : <ExpandLess />}
                 </Button>
@@ -145,7 +150,12 @@ export default function AutocompleteComponent<T>({
                 id={id}
                 open={open}
                 anchorEl={anchorEl}
-                placement='bottom-end'
+                placement='bottom'
+                modifiers={{
+                  flip: {
+                    enabled: false,
+            }
+        }}
             >
                 <ClickAwayListener
                     onClickAway={() => {
@@ -154,6 +164,7 @@ export default function AutocompleteComponent<T>({
                 >
                     <div>
                         <Autocomplete
+                          sx={{minHeight: 300}}
                             open
                             multiple
                             disableCloseOnSelect
@@ -196,7 +207,6 @@ export default function AutocompleteComponent<T>({
                                     fullWidth
                                     ref={params.InputProps.ref}
                                     inputProps={params.inputProps}
-                                    autoFocus
                                     placeholder={placeholder}
                                 />
                             )}

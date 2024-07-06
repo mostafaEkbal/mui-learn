@@ -33,7 +33,7 @@ const Header = ({ title }) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             marginBottom: '20px',
-            marginLeft: '320px',
+            marginLeft: '0px',
         },
         link: {
             fontWeight: 500,
