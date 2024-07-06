@@ -7,17 +7,56 @@ import Autocomplete, {
     autocompleteClasses
 } from '@mui/material/Autocomplete';
 import ButtonBase from '@mui/material/ButtonBase';
-import InputBase from '@mui/material/InputBase';
 import Box from '@mui/material/Box';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import { Checkbox, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
+interface PopperComponentProps {
+    anchorEl?: any;
+    disablePortal?: boolean;
+    open: boolean;
+}
 
 const icon = <CheckBoxOutlineBlankIcon fontSize='small' />;
 const checkedIcon = <CheckBoxIcon fontSize='small' />;
 
+const StyledAutocompletePopper = styled('div')(({ theme }) => ({
+    [`& .${autocompleteClasses.paper}`]: {
+        boxShadow: 'none',
+        margin: 0,
+        color: 'inherit',
+        fontSize: 13
+    },
+    [`& .${autocompleteClasses.listbox}`]: {
+        backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128',
+        padding: 0,
+        [`& .${autocompleteClasses.option}`]: {
+            minHeight: 'auto',
+            alignItems: 'flex-start',
+            padding: 8,
+            borderBottom: `1px solid ${
+                theme.palette.mode === 'light' ? '#eaecef' : '#30363d'
+            }`,
+            '&[aria-selected="true"]': {
+                backgroundColor: 'transparent'
+            },
+            [`&.${autocompleteClasses.focused}, &.${autocompleteClasses.focused}[aria-selected="true"]`]:
+                {
+                    backgroundColor: theme.palette.action.hover
+                }
+        }
+    },
+    [`&.${autocompleteClasses.popperDisablePortal}`]: {
+        position: 'relative'
+    }
+}));
+
+function PopperComponent(props: PopperComponentProps) {
+    const { disablePortal, anchorEl, open, ...other } = props;
+    return <StyledAutocompletePopper {...other} />;
+}
 
 const StyledPopper = styled(Popper)(({ theme }) => ({
     border: `1px solid ${
@@ -30,12 +69,10 @@ const StyledPopper = styled(Popper)(({ theme }) => ({
     }`,
     borderRadius: 6,
     width: 300,
-    minHeight: 'fit-content',
     zIndex: theme.zIndex.modal,
     fontSize: 13,
     color: theme.palette.mode === 'light' ? '#24292e' : '#c9d1d9',
-    backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128',
-    marginTop: 8 // Add margin here to move the Popper down
+    backgroundColor: theme.palette.mode === 'light' ? '#fff' : '#1c2128'
 }));
 
 const StyledInput = styled(TextField)(({ theme }) => ({
@@ -59,10 +96,8 @@ const Button = styled(ButtonBase)(({ theme }) => ({
     justifyContent: 'end',
     width: '100%',
     textAlign: 'left',
-    minHeight: 'fit-content',
-    marginBottom: 100,
     padding: 8,
-    outline: '1px solid #999',
+    outline: '1px solid #8b949e',
     fontFamily: 'sans-serif',
     borderRadius: 'var(--borderRadius)',
     color: theme.palette.mode === 'light' ? '#586069' : '#8b949e',
@@ -81,8 +116,8 @@ const Button = styled(ButtonBase)(({ theme }) => ({
 interface AutocompleteComponentProps<T> {
     data: T[];
     onItemSelected: (selectedItems: T[]) => void;
-    menuPlaceholder?: string;
     placeholder?: string;
+    menuPlaceholder?: string;
     renderOption: (
         props: React.HTMLAttributes<HTMLLIElement>,
         option: T
@@ -93,7 +128,7 @@ interface AutocompleteComponentProps<T> {
 export default function AutocompleteComponent<T>({
     data,
     onItemSelected,
-    placeholder,
+    placeholder = 'Filter items',
     menuPlaceholder,
     renderOption,
     getOptionLabel
@@ -150,12 +185,15 @@ export default function AutocompleteComponent<T>({
                 id={id}
                 open={open}
                 anchorEl={anchorEl}
-                placement='bottom'
-                modifiers={{
-                  flip: {
-                    enabled: false,
-            }
-        }}
+                placement='bottom-end'
+                modifiers={[
+                    {
+                        name: 'offset',
+                        options: {
+                            offset: [0, 2]
+                        }
+                    }
+                ]}
             >
                 <ClickAwayListener
                     onClickAway={() => {
@@ -164,7 +202,6 @@ export default function AutocompleteComponent<T>({
                 >
                     <div>
                         <Autocomplete
-                          sx={{minHeight: 300}}
                             open
                             multiple
                             disableCloseOnSelect
@@ -180,6 +217,7 @@ export default function AutocompleteComponent<T>({
                             }}
                             clearOnEscape
                             disableClearable
+                            PopperComponent={PopperComponent}
                             noOptionsText='No items'
                             renderOption={(props, option) => {
                                 const isSelected =

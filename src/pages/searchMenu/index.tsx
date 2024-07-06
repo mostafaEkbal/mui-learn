@@ -117,7 +117,7 @@ const searchMenu = () => {
                     <NestedSearchMenu
                         data={data}
                         onItemSelected={onItemSelected}
-                        menuPlaceholder= 'select assets'
+                        menuPlaceholder='select assets'
                         placeholder='Search assets'
                         renderOption={(props, option) => (
                             <Box>
