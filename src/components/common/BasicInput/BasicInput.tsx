@@ -1,11 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
     BaseTextFieldProps,
-    FormControl,
     IconButton,
     InputAdornment,
-    InputLabel,
-    OutlinedInput,
     TextField
 } from '@mui/material';
 import * as Yup from 'yup';
@@ -59,7 +56,7 @@ const BasicInput: React.FC<IBasicInputProps> = ({
                 return Yup.string().email('Email is invalid');
             case 'phoneNumber':
                 return Yup.string().matches(
-                    /^[0-9]{10}$/,
+                    /^\d{10}$/,
                     'Phone number is not valid'
                 );
             case 'password':
@@ -73,28 +70,30 @@ const BasicInput: React.FC<IBasicInputProps> = ({
                         /[A-Z]/,
                         'Password must contain at least one uppercase letter'
                     )
-                    .matches(
-                        /[0-9]/,
-                        'Password must contain at least one number'
-                    );
+                    .matches(/\d/, 'Password must contain at least one number');
             default:
                 return Yup.string();
         }
     }, []);
 
-    const validationSchema = useCallback(
-        () =>
-            Yup.object().shape({
-                value: regExp
-                    ? Yup.string().matches(regExp, `${label} is not valid`)
-                    : required
-                    ? getDefaultValidation(inputType).required(
-                          `${label} is required`
-                      )
-                    : getDefaultValidation(inputType)
-            }),
-        [inputType, label, regExp, required, getDefaultValidation]
-    );
+    const validationSchema = useCallback(() => {
+        function buildValueSchema() {
+            if (regExp) {
+                return Yup.string().matches(regExp, `${label} is not valid`);
+            }
+
+            let schema = getDefaultValidation(inputType);
+
+            if (required) {
+                schema = schema.required(`${label} is required`);
+            }
+
+            return schema;
+        }
+        return Yup.object().shape({
+            value: buildValueSchema()
+        });
+    }, [inputType, label, regExp, required, getDefaultValidation]);
 
     useEffect(() => {
         const validateInput = async (value: string) => {

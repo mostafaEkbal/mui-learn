@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useTheme, styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Popper from '@mui/material/Popper';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Autocomplete, {
@@ -53,7 +53,7 @@ const StyledAutocompletePopper = styled('div')(({ theme }) => ({
     }
 }));
 
-function PopperComponent(props: PopperComponentProps) {
+function PopperComponent(props: Readonly<PopperComponentProps>) {
     const { disablePortal, anchorEl, open, ...other } = props;
     return <StyledAutocompletePopper {...other} />;
 }
@@ -132,11 +132,10 @@ export default function AutocompleteComponent<T>({
     menuPlaceholder,
     renderOption,
     getOptionLabel
-}: AutocompleteComponentProps<T>) {
+}: Readonly<AutocompleteComponentProps<T>>) {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const [menuIsOpen, setMenuIsOpen] = React.useState(false);
     const [selectedItems, setSelectedItems] = React.useState<T[]>([]);
-    const theme = useTheme();
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -223,8 +222,9 @@ export default function AutocompleteComponent<T>({
                                 const isSelected =
                                     selectedItems.includes(option);
                                 return (
-                                    <li
+                                    <menuitem
                                         {...props}
+                                        role='menuitem'
                                         onClick={() => handleItemClick(option)}
                                     >
                                         <Checkbox
@@ -234,7 +234,7 @@ export default function AutocompleteComponent<T>({
                                             checked={isSelected}
                                         />
                                         {renderOption(props, option)}
-                                    </li>
+                                    </menuitem>
                                 );
                             }}
                             options={data}
