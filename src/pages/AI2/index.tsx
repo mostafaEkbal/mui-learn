@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
+import Image from 'next/image';
 
 interface Prediction {
     name: string;
@@ -89,10 +90,18 @@ const App: React.FC = () => {
             <h1>Image Content Moderation</h1>
             <div {...getRootProps()} style={dropzoneStyles}>
                 <input {...getInputProps()} />
-                <p>Drag 'n' drop an image here, or click to select one</p>
+                <p>
+                    Drag &#39;n&#39; drop an image here, or click to select one
+                </p>
             </div>
             {imagePreview && (
-                <img src={imagePreview} alt='Uploaded' style={imageStyles} />
+                <Image
+                    src={imagePreview}
+                    alt='Uploaded'
+                    style={imageStyles}
+                    width={300}
+                    height={200}
+                />
             )}
             <button onClick={classifyImage} disabled={!imageFile || isLoading}>
                 {isLoading ? 'Processing...' : 'Check Image Content'}
