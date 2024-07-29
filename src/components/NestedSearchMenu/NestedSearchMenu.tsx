@@ -9,7 +9,7 @@ import Autocomplete, {
 import ButtonBase from '@mui/material/ButtonBase';
 import Box from '@mui/material/Box';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { Checkbox, TextField } from '@mui/material';
+import { Checkbox, MenuItem, TextField } from '@mui/material';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 
@@ -170,7 +170,7 @@ export default function AutocompleteComponent<T>({
                 <Button
                     disableRipple
                     aria-describedby={id}
-                    onClick={handleClick}
+                    onClick={(e) => handleClick(e)}
                 >
                     <span>
                         {selectedItems.length > 0
@@ -222,8 +222,7 @@ export default function AutocompleteComponent<T>({
                                 const isSelected =
                                     selectedItems.includes(option);
                                 return (
-                                    <menuitem
-                                        {...props}
+                                    <MenuItem
                                         role='menuitem'
                                         onClick={() => handleItemClick(option)}
                                     >
@@ -234,7 +233,7 @@ export default function AutocompleteComponent<T>({
                                             checked={isSelected}
                                         />
                                         {renderOption(props, option)}
-                                    </menuitem>
+                                    </MenuItem>
                                 );
                             }}
                             options={data}

@@ -119,7 +119,7 @@ const searchMenu = () => {
                         onItemSelected={onItemSelected}
                         menuPlaceholder='select assets'
                         placeholder='Search assets'
-                        renderOption={(props, option) => (
+                        renderOption={(_props, option) => (
                             <Box>
                                 <span>{option.name}</span>
                                 <br />
