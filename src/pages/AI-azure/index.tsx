@@ -82,7 +82,7 @@ const App: React.FC = () => {
 
         try {
             const imageUrl =
-                'https://www.indiaspend.com/h-upload/2021/07/21/516856-prescription-drugs-controlled-chemicals-are-fuelling-indias-illicit-drug-trade-reports.jpg';
+                'https://cdn.britannica.com/91/191791-050-04681C4C/drug-syringe-heroin-spoon.jpg';
 
             const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_AZURE_ENDPOINT}/vision/v3.1/analyze`,
@@ -115,7 +115,7 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className='App'>
+        <div className='App' style={{ padding: 10 }}>
             <h1>Image Analysis</h1>
             <div {...getRootProps()} style={dropzoneStyles}>
                 <input {...getInputProps()} />
