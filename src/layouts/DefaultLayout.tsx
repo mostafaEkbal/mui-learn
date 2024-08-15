@@ -8,11 +8,16 @@ import Navbar from '@/components/Navbar/Navbar';
 import Header from '@/components/Header/Header';
 import { Outlet } from '@mui/icons-material';
 import { useRouter } from 'next/router';
+import GridWrapper from "@/components/common/GridWrapper/GridWrapper";
+import {App, ColorPicker, ColorPickerProps} from "antd";
 
 const inter = Inter({ subsets: ['latin'] });
 
 const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
     const [title, setTitle] = useState<string>('');
+    const { message } = App.useApp();
+    const [value, setValue] = useState<string>('#3d5f8f');
+
     const location = useRouter().pathname;
 
     useEffect(() => {
@@ -34,11 +39,21 @@ const DefaultLayout: React.FC<{ children: ReactNode }> = ({ children }) => {
                 <link rel='icon' href='/favicon.ico' />
             </Head>
 
-            <Grid container sx={{ bgcolor: '#222' }}>
+            <Grid container sx={{ bgcolor: '#555' }}>
                 <Navbar />
                 <Header title={title} />
-                {children}
             </Grid>
+            <GridWrapper color={value}>
+                {children}
+                <div style={{marginTop: 50}}>
+                    <ColorPicker
+                        value={value}
+                        onChangeComplete={(color) => {
+                            setValue(color.toHexString());
+                        }}
+                    />
+                </div>
+            </GridWrapper>
         </>
     );
 };

@@ -10,7 +10,7 @@ const phoneRegExp =
 export interface IModalInputValues {
     userId: string;
     email: string;
-    phoneNumber: string;
+    phoneNumber?: string;
 }
 
 const defaultInputValues = {
@@ -61,7 +61,7 @@ const NewUserModal: React.FC<{
 
     const addUser = (data: IModalInputValues) => {
         addNewUser(data);
-        open;
+
     };
 
     const handleChange = (value: IModalInputValues) => {

@@ -1,12 +1,25 @@
 import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
-import { ThemeProvider } from '@mui/material/styles';
 import { dashboardTheme } from './dashboardTheme';
+import { GoogleTagManager } from '@next/third-parties/google';
+import { useEffect } from 'react';
+import {ConfigProvider} from "antd";
+
 
 export default function App({ Component, pageProps }: AppProps) {
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                event: 'pageview',
+                page: window.location.pathname
+            });
+        }
+    }, []);
     return (
-        <ThemeProvider theme={dashboardTheme}>
+        <ConfigProvider>
             <Component {...pageProps} />
-        </ThemeProvider>
+            <GoogleTagManager gtmId='GTM-5DD38WQJ' />
+        </ConfigProvider>
     );
 }
