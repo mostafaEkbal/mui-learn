@@ -1,4 +1,14 @@
-import { Area, AreaChart } from 'recharts';
+import {
+    Tooltip,
+    Legend,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Area,
+    AreaChart,
+    ResponsiveContainer,
+    TooltipProps
+} from 'recharts';
 const data = [
     {
         name: 'Page A',
@@ -45,10 +55,61 @@ const data = [
 ];
 const AreaChartComponent = () => {
     return (
-        <AreaChart width={500} height={400} data={data}>
-            <Area dataKey='uv' />
-        </AreaChart>
+        <ResponsiveContainer width='100%' height='100%'>
+            <AreaChart
+                width={500}
+                height={400}
+                data={data}
+                margin={{ right: 30, top: 30 }}
+            >
+                <YAxis />
+                <XAxis dataKey={'name'} />
+                <CartesianGrid strokeDasharray='3 3' />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Area
+                    dataKey='uv'
+                    type={'monotone'}
+                    stroke='#2563eb'
+                    fill='#3b83f6'
+                    stackId={'1'}
+                />
+                <Area
+                    dataKey='amt'
+                    type={'monotone'}
+                    fill='#2563eb'
+                    stroke='#3b83f6'
+                    stackId={'1'}
+                />
+            </AreaChart>
+        </ResponsiveContainer>
     );
+};
+
+const CustomTooltip = (o: TooltipProps<number, string>) => {
+    const { active, payload, label } = o;
+    if (active) {
+        return (
+            <div
+                className='custom-tooltip'
+                style={{
+                    backgroundColor: '#2563eb',
+                    padding: 10,
+                    borderRadius: 5,
+                    color: '#fff'
+                }}
+            >
+                <p className='label'>{label}</p>
+                <div>
+                    <span className='value'>{`${payload?.[0]?.name} : ${payload?.[0]?.value}`}</span>
+                </div>
+                <div className=''>
+                    <span className='value'>{`${payload?.[1]?.name} : ${payload?.[1]?.value}`}</span>
+                </div>
+            </div>
+        );
+    }
+    return null;
 };
 
 export default AreaChartComponent;
