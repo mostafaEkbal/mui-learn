@@ -7,7 +7,10 @@ import {
     Area,
     AreaChart,
     ResponsiveContainer,
-    TooltipProps
+    TooltipProps,
+    BarChart,
+    Bar,
+    Rectangle
 } from 'recharts';
 const data = [
     {
@@ -53,10 +56,11 @@ const data = [
         amt: 2100
     }
 ];
-const AreaChartComponent = () => {
+
+const BarChartComponent = () => {
     return (
         <ResponsiveContainer width='100%' height='100%'>
-            <AreaChart
+            <BarChart
                 width={500}
                 height={400}
                 data={data}
@@ -65,34 +69,33 @@ const AreaChartComponent = () => {
                 <YAxis />
                 <XAxis dataKey={'name'} />
                 <CartesianGrid strokeDasharray='3 3' />
-                <Tooltip content={<CustomTooltip />} />
+                <Tooltip />
                 <Legend />
-                <Area
+                <Bar
                     dataKey='uv'
                     type={'monotone'}
                     stroke='#2563eb'
                     fill='#3b83f6'
-                    stackId={'1'}
+                    activeBar={<Rectangle fill='pink' stroke='blue' />}
                 />
-                <Area
+                <Bar
                     dataKey='amt'
                     type={'monotone'}
                     fill='#2563eb'
                     stroke='#3b83f6'
-                    stackId={'1'}
+                    activeBar={<Rectangle fill='gold' stroke='purple' />}
                 />
-                <Area
+                <Bar
                     dataKey='pv'
                     type={'monotone'}
                     fill='#2563aa'
-                    stroke='#3b83f6'
-                    stackId={'1'}
+                    stroke='#3b83aa'
+                    activeBar={<Rectangle fill='purple' stroke='deepBlue' />}
                 />
-            </AreaChart>
+            </BarChart>
         </ResponsiveContainer>
     );
 };
-
 const CustomTooltip = (o: TooltipProps<number, string>) => {
     const { active, payload, label } = o;
     if (active) {
@@ -119,4 +122,4 @@ const CustomTooltip = (o: TooltipProps<number, string>) => {
     return null;
 };
 
-export default AreaChartComponent;
+export default BarChartComponent;

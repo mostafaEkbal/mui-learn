@@ -1,4 +1,5 @@
 import AreaChartComponent from '@/components/Charts/AreaChart';
+import BarChartComponent from '@/components/Charts/BarChart';
 import DefaultLayout from '@/layouts/DefaultLayout';
 
 const index = () => {
@@ -20,7 +21,9 @@ const index = () => {
                         width: 500,
                         backgroundColor: '#2e485f'
                     }}
-                ></div>
+                >
+                    <BarChartComponent></BarChartComponent>
+                </div>
                 <div
                     style={{
                         height: 400,
